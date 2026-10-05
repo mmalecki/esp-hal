@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- ESP32-S3: `lmacTxDone`, `ppTxPkt`, `pp_post` and `pm_enable_active_timer` link to the Wi-Fi blobs' patched copies instead of ROM, as in ESP-IDF
 
 ### Removed
 
