@@ -803,7 +803,7 @@ pub struct CredentialsInfo {
 
 /// A collection of elements.
 #[derive(Debug, Clone)]
-pub struct Collection<T>(alloc::vec::Vec<T>);
+pub struct Collection<T>(pub(crate) alloc::vec::Vec<T>);
 
 impl<T> Collection<T> {
     /// The elements of this collection.

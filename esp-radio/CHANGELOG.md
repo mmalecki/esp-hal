@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Wi-Fi Fine Timing Measurement (FTM) API, for use with `wifi_ftm_enable`: `AccessPointConfig::with_ftm_responder`, `AccessPointInfo::ftm_responder`/`ftm_initiator`, and `WifiController::ftm_initiate_session_async`, `ftm_end_session` and `ftm_responder_set_offset`
 
 ### Changed
 

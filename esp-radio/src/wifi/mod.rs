@@ -101,6 +101,8 @@ unstable_module!(
     #[cfg_attr(docsrs, doc(cfg(feature = "csi")))]
     pub mod csi;
     pub mod event;
+    #[cfg(wifi_ftm_enable)]
+    pub mod ftm;
     #[cfg(feature = "sniffer")]
     #[cfg_attr(docsrs, doc(cfg(feature = "sniffer")))]
     pub mod sniffer;
@@ -3648,7 +3650,7 @@ ignored."
                 max_connection: (config.max_connections as u8).min(ap_max_connections),
                 beacon_interval: 100,
                 pairwise_cipher: wifi_cipher_type_t_WIFI_CIPHER_TYPE_CCMP,
-                ftm_responder: false,
+                ftm_responder: config.ftm_responder,
                 pmf_cfg: wifi_pmf_config_t {
                     capable: true,
                     required: false,

@@ -58,8 +58,8 @@ options:
 
   - name: wifi_ftm_enable
     description: "Enable Fine Timing Measurement (FTM) for calculating Wi-Fi Round-Trip-Time (RTT).
-      Mirrors ESP-IDF's `CONFIG_ESP_WIFI_FTM_ENABLE`. esp-radio doesn't provide an FTM API,
-      so this is only useful when using the driver's FTM functions directly."
+      Mirrors ESP-IDF's `CONFIG_ESP_WIFI_FTM_ENABLE`. Enables the `wifi::ftm` module (with the
+      `unstable` feature) and `AccessPointConfig::with_ftm_responder`."
     default:
       - value: false
     active: "wifi_has_ftm"

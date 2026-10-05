@@ -33,6 +33,10 @@ pub struct AccessPointInfo {
     #[cfg_attr(docsrs, doc(cfg(feature = "unstable")))]
     /// The country information of the access point (if available from beacon frames).
     pub country: Option<CountryInfo>,
+    /// Whether the access point advertises Fine Timing Measurement (FTM) responder support.
+    pub ftm_responder: bool,
+    /// Whether the access point advertises Fine Timing Measurement (FTM) initiator support.
+    pub ftm_initiator: bool,
 }
 
 /// Configuration for a Wi-Fi access point.
@@ -64,6 +68,11 @@ pub struct AccessPointConfig {
     /// Time to force deauth the station if the Soft-AccessPoint doesn't receive any data.
     #[builder_lite(unstable)]
     pub(crate) beacon_timeout: u16,
+    /// Whether the access point answers Fine Timing Measurement (FTM) requests, i.e. acts as
+    /// an FTM responder. Requires the `wifi_ftm_enable` and `wifi_ftm_responder_support`
+    /// configuration options.
+    #[builder_lite(unstable)]
+    pub(crate) ftm_responder: bool,
 }
 
 #[cfg(wifi_softap_support)]
@@ -87,6 +96,11 @@ impl AccessPointConfig {
             return Err(WifiError::InvalidArguments);
         }
 
+        if self.ftm_responder && !cfg!(all(wifi_ftm_enable, wifi_ftm_responder_support)) {
+            warn!("FTM responder requires `wifi_ftm_enable` and `wifi_ftm_responder_support`.");
+            return Err(WifiError::Unsupported);
+        }
+
         Ok(())
     }
 }
@@ -104,6 +118,7 @@ impl Default for AccessPointConfig {
             max_connections: 255,
             dtim_period: 2,
             beacon_timeout: 300,
+            ftm_responder: false,
         }
     }
 }
@@ -166,5 +181,7 @@ pub(crate) fn convert_ap_info(record: &wifi_ap_record_t) -> AccessPointInfo {
         auth_method: Some(AuthenticationMethod::from_raw(record.authmode)),
         #[cfg(feature = "unstable")]
         country: CountryInfo::try_from_c(&record.country),
+        ftm_responder: record.ftm_responder() != 0,
+        ftm_initiator: record.ftm_initiator() != 0,
     }
 }
